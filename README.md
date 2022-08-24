@@ -15,4 +15,7 @@ The file `generate_parameterised_reports.R` contains code to programmatically ge
 
 <Insert directory tree image here>
 
+## A note about Quarto rendering 
 
+
+The {quarto} package contains a function, `quarto_render()`, which is a mirror for `rmarkdown::render()`. However, in the `quarto::quarto_render` there is no `output_dir` argument. This means that the rendered .html(or any output format) are stored in the same place as the .qmd file. This is why the `district_report.qmd` file is in the `store_district_QmdReports` folder. There is a current issue open on the rstudion community about this as well. [To read more click here.](https://community.rstudio.com/t/output-directory-in-quarto-cli-not-respected/143762/6)
