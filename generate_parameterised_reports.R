@@ -76,7 +76,7 @@ warp_render_quarto <- function(para_input){
   
   
   quarto::quarto_render(
-    input = here("district_report.qmd"),
+    input = here("store_district_QmdReports/district_report.qmd"),
     output_file = paste(
       ".\\store_district_QmdReports\\District_Report",
       para_input,
@@ -98,4 +98,4 @@ tictoc::tic()
 map(sequence_param, warp_render_quarto)
 tictoc::toc()
 
-### This took nearly 6 minutes (382.39sec) to generate 26 reports.
+### This took nearly 6 minutes (401.05sec) to generate 26 reports.
