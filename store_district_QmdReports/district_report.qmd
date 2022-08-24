@@ -1,0 +1,286 @@
+---
+title: "`r paste('District Level Report','- Kheda')`"
+author: "Ayush Patel"
+date: "2022-08-23"
+format: html
+params:
+  dist_name: "Kheda"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r libs_and_data_import, include=FALSE}
+library(here)
+library(tidyverse)
+library(ggtext)
+library(highcharter)
+
+read_csv(here("data_prepared/data_prepared.csv")) %>% 
+  filter(district_name == params$dist_name)-> data_report
+```
+
+
+
+# Introduction - `r params$dist_name`
+
+This report aims to provide a birds eye view of the district through the lens of village amenities data released by census in 2011. Before moving towards the descriptive insights from the census data, here is what pops up when a search is executed for `r params$dist_name` district Gujarat on wikipedia.
+
+<br>
+
+```{r goog_web_show, results='asis'}
+
+htmltools::HTML(
+  paste0('<center><iframe src="https://en.wikipedia.org/w/index.php?search=',
+         params$dist_name,
+         '+district+Gujarat&title=Special:Search&profile=advanced&fulltext=1&ns0=1" style="height:500px;width:800px;border:none;" title="District Web Page"></iframe></center>')
+)
+
+```
+
+
+<br>
+
+# Summary Statistics 
+
+Total Number of Villages: `r nrow(data_report)`
+<br><br>
+Total Number of Gram Panchayat: `r length(unique(data_report$gram_panchayat_name))`
+<br><br>
+Total Number of Sub Districts: `r length(unique(data_report$sub_district_name))`
+<br><br>
+Total Population : `r sum(data_report$total_population_of_village,na.rm=T)`
+
+## Statistical Summaries at the subdistrict level
+
+```{r stat_summ}
+data_report %>% 
+  group_by("Sub District" = sub_district_name ) %>% 
+  summarise(
+    `Total Population` = sum(total_population_of_village,
+                             na.rm = T),
+    `Total SC Population` =
+      sum(total_scheduled_castes_population_of_village,
+                             na.rm = T),
+    `Total ST Population` =
+      sum(total_scheduled_tribes_population_of_village,
+                             na.rm = T),
+    `Total Area of Vilalges` = sum(total_geographical_area_in_hectares,
+                                   na.rm = T),
+    `Total Area Sown (Net)` = sum(net_area_sown_in_hectares,
+                                  na.rm = T)
+  ) %>% 
+  knitr::kable()%>%
+  kableExtra::kable_styling()%>%
+  kableExtra::scroll_box(width = "100%", height = "400px")
+  
+```
+
+# Population and Geographical Area
+
+It is of interest to look into which are the most densely populated villages. We can do this by creating a simple scatter plot between population of village and the total geographical area of a village.
+
+```{r popdense, fig.align='center', out.width='100%'}
+
+hchart(
+  data_report,
+  "scatter",
+  hcaes(total_geographical_area_in_hectares,
+             total_population_of_village, group = sub_district_name)
+) %>% 
+  hc_xAxis(title = list(
+    text = "Area of village in hectares"
+  )) %>% 
+  hc_yAxis(title = list(
+    text = "Population of village"
+  )) %>% 
+  hc_tooltip(
+    formatter = htmlwidgets::JS('function(){
+                                return "<b>" + "Village:" + this.point.village_name + "</b>" + "<br>" + "Sub District: " + this.point.sub_district_name + "<br>" + "Area of Village: " + this.x + "<br>" + "Population of Village: " + this.y
+    }')
+  ) %>% 
+  hc_legend(
+    width = "60%"
+  )
+
+```
+
+<br>
+
+# Irrigation for Agriculture
+
+The census provides the net area sown (hectares) in a village along with area irrigated with water source in hectares. The area under irrigation may be affected by several factors. 
+
+## Area Sown vs Area under Irrigation
+
+```{r irrarae_sownarea, fig.align='center', out.width='100%'}
+
+hchart(
+  data_report,
+  "scatter",
+  hcaes(net_area_sown_in_hectares,
+             area_irrigated_by_source_in_hectares, 
+        group = sub_district_name)
+) %>% 
+  hc_xAxis(title = list(
+    text = "Net area sown in the village"
+  )) %>% 
+  hc_yAxis(title = list(
+    text = "Area irrigated by water source"
+  )) %>% 
+  hc_tooltip(
+    formatter = htmlwidgets::JS('function(){
+                                return "<b>" + "Village:" + this.point.village_name + "</b>" + "<br>" + "Sub District: " + this.point.sub_district_name + "<br>" + "Net Area Sown: " + this.x + "<br>" + "Area Irrigated: " + this.y
+    }')
+  ) %>% 
+  hc_legend(
+    width = "60%"
+  )
+
+```
+
+<br>
+
+__A distribution for the percentage of area irrigated will be interesting to look at.__
+
+```{r dist_perc_irri,fig.align='center', out.width='100%' }
+
+
+data_to_boxplot(data = data_report %>%
+  mutate(
+    perc_irrigated_over_net_sown =
+      area_irrigated_by_source_in_hectares*100/net_area_sown_in_hectares
+  ),
+  variable = perc_irrigated_over_net_sown,
+  group_var = sub_district_name,
+  add_outliers = T
+  )-> irr_box_data
+
+highchart() %>% 
+  hc_xAxis(type = "category",
+           scrollbar = list(enabled = T),
+           min = 0,
+           max = 6,
+           title = list(
+             text = "Sub District"
+           )) %>% 
+  hc_add_series_list(irr_box_data) %>% 
+  hc_yAxis(
+    title = list(
+      text = "Pedrcentage of irrigated net sown area in village"
+    )
+  ) %>% 
+  hc_title(text = "How much of the agricultural are is irrigated") %>%
+  hc_legend(enabled = F)
+  
+
+```
+
+## Understanding what drives area under irrigation
+
+
+Much is heard about rain fed agriculture in India. There are several factors that can affect area under irrigation - ranging from government supports, demographics, distance from urban clusters and several known and unknown variables. With the given data we can check if the following variables have any relation with area under irrigation:
+
+  + Percentage of Marginalised group population in village
+  + Distance from Major government offices
+  + Distance from urban center
+  + Total population of a village
+
+__A simple Linear regression to see if the above explanation has any merit__
+
+```{r sub_check, include=FALSE}
+data_report%>% 
+  pull(sub_district_name) %>% 
+  unique() |>
+  length() >= 2 -> sub_check_var
+```
+
+
+```{r regress, results='asis', out.width="75%", eval= sub_check_var}
+
+lm(data = data_report %>%
+  mutate(
+    perc_irrigated_over_net_sown =
+      area_irrigated_by_source_in_hectares*100/net_area_sown_in_hectares,
+    perc_marginalised_pop = 
+      (total_scheduled_castes_population_of_village+
+         total_scheduled_tribes_population_of_village)*100/total_population_of_village
+  ),
+  formula = perc_irrigated_over_net_sown ~ total_population_of_village + perc_marginalised_pop + district_head_quarter_distance_in_km + sub_district_head_quarter_distance_in_km + nearest_statutory_town_distance_in_km + sub_district_name
+    
+) -> mod_irrigation
+
+stargazer::stargazer(mod_irrigation,type = "html")
+```
+
+
+```{r regress_alt, results='asis', out.width="75%", eval= !sub_check_var}
+
+lm(data = data_report %>%
+  mutate(
+    perc_irrigated_over_net_sown =
+      area_irrigated_by_source_in_hectares*100/net_area_sown_in_hectares,
+    perc_marginalised_pop = 
+      (total_scheduled_castes_population_of_village+
+         total_scheduled_tribes_population_of_village)*100/total_population_of_village
+  ),
+  formula = perc_irrigated_over_net_sown ~ total_population_of_village + perc_marginalised_pop + district_head_quarter_distance_in_km + sub_district_head_quarter_distance_in_km + nearest_statutory_town_distance_in_km 
+    
+) -> mod_irrigation
+
+stargazer::stargazer(mod_irrigation,type = "html")
+```
+
+
+
+### Model Diagnostic plots
+
+```{r plt_res_dist,fig.align='center', out.width='100%', fig.cap="Distribution of Redsiduals"}
+as.data.frame(mod_irrigation$residuals) %>% 
+  ggplot(aes(mod_irrigation$residuals))+
+  geom_density()+
+  labs(title = "Distribution of Residuals of the Regression Model",
+       x = "Residuals")+
+  theme_bw()+
+  theme(plot.background = element_rect(fill = "#f3f0f1"),
+        panel.background = element_rect(fill = "#f3f0f1"))
+  
+```
+
+<br>
+
+```{r res_fit,fig.align='center', out.width='100%', fig.cap="Residuals vs Fitted" }
+
+as.data.frame(
+  cbind(mod_irrigation$residuals, 
+      mod_irrigation$fitted.values ) 
+  )-> res_fit
+
+colnames(res_fit) <- c("res","fit")
+
+res_fit %>% 
+  ggplot() + 
+  geom_jitter(aes(fit, res),alpha = 0.65)+
+  labs(title = "Residuals and Fitted values",
+       x = "Fitted Values",
+       y = "Residuals")+
+  theme_bw()+
+  theme(plot.background = element_rect(fill = "#f3f0f1"),
+        panel.background = element_rect(fill = "#f3f0f1"))
+
+
+
+```
+
+
+# Note
+
+This is to serve as a minimal example of creating parameterised reports with .rmd/.qmd files. This document is in no way analytically or statistically rigorous.
+
+
+
+
+
+
