@@ -2,7 +2,7 @@
 title: "Generating Parameterised Reports with help of purrr"
 author: "Ayush Patel"
 date: "2022-08-25"
-output: html_document
+output: rmdformats::downcute
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +27,7 @@ The file `generate_parameterised_reports.R` contains code to programmatically ge
 Below is the project strucutre.
 
 ```{r file_Str, echo=FALSE}
-fs::dir_tree()
+fs::dir_tree(recurse = 2)
 ```
 
 
