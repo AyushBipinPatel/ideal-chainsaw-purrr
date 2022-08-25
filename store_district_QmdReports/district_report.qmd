@@ -97,7 +97,10 @@ hchart(
   )) %>% 
   hc_yAxis(title = list(
     text = "Population of village"
-  )) %>% 
+  ),
+  min = 0,
+  max = max(data_report$total_geographical_area_in_hectares,na.rm = T)
+  ) %>% 
   hc_tooltip(
     formatter = htmlwidgets::JS('function(){
                                 return "<b>" + "Village:" + this.point.village_name + "</b>" + "<br>" + "Sub District: " + this.point.sub_district_name + "<br>" + "Area of Village: " + this.x + "<br>" + "Population of Village: " + this.y
@@ -128,7 +131,10 @@ hchart(
 ) %>% 
   hc_xAxis(title = list(
     text = "Net area sown in the village"
-  )) %>% 
+  ),
+  min = 0,
+  max = max(data_report$net_area_sown_in_hectares, na.rm = T)
+  ) %>% 
   hc_yAxis(title = list(
     text = "Area irrigated by water source"
   )) %>% 
