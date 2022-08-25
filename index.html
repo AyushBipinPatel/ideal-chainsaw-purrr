@@ -1504,16 +1504,10 @@ Prism.languages.r={comment:/#.*/,string:{pattern:/(['"])(?:\\.|(?!\1)[^\\\r\n])*
             <li><a href="#a-note-about-quarto-rendering" id="toc-a-note-about-quarto-rendering">A note about Quarto
             rendering</a></li>
             <li><a href="#a-note-on-process" id="toc-a-note-on-process">A note on process</a></li>
-            <li><a href="#step-1-arriving-at-the-analyses-that-you-want-to-present-in-report" id="toc-step-1-arriving-at-the-analyses-that-you-want-to-present-in-report">Step
-            1 — Arriving at the analyses that you want to present in
-            report</a></li>
-            <li><a href="#step-2-prepare-data-for-the-reprot" id="toc-step-2-prepare-data-for-the-reprot">Step 2 — Prepare
-            data for the reprot</a></li>
-            <li><a href="#step-3-write-the-report-structure" id="toc-step-3-write-the-report-structure">Step 3 — Write
-            the Report Structure</a></li>
-            <li><a href="#step-4-one-ring-to-rule-them-all-one-script-to-create-all-the-reports" id="toc-step-4-one-ring-to-rule-them-all-one-script-to-create-all-the-reports">Step
-            4 — One ring to rule them All (One script to create all the
-            reports)</a></li>
+            <li><a href="#where-is-the-code-for-all-this" id="toc-where-is-the-code-for-all-this">Where is the code
+            for all this??</a></li>
+            <li><a href="#where-are-the-reprots" id="toc-where-are-the-reprots">Where are the
+            reprots</a></li>
             </ul></li>
             </ul>
           </div>
@@ -1656,10 +1650,9 @@ read more click here.</a></p>
 <h2>A note on process</h2>
 <p>This is an attempt to lay down the steps to generate parameterised
 reports using purrr and rmarkdown.</p>
-</div>
-<div id="step-1-arriving-at-the-analyses-that-you-want-to-present-in-report" class="section level2">
-<h2>Step 1 — Arriving at the analyses that you want to present in
-report</h2>
+<div id="step-1-arriving-at-the-analyses-that-you-want-to-present-in-report" class="section level3">
+<h3>Step 1 — Arriving at the analyses that you want to present in
+report</h3>
 <p>It is important to have completed all exploratory analyses and have
 gone through various analytical detours and rabbit holes beforehand.
 This process usually helps in deciding what is to be reported and decide
@@ -1668,8 +1661,8 @@ be set and frozen. However, one can enhance this framework from time to
 time. It is also in this step you decide what all params you will need
 or keep.</p>
 </div>
-<div id="step-2-prepare-data-for-the-reprot" class="section level2">
-<h2>Step 2 — Prepare data for the reprot</h2>
+<div id="step-2-prepare-data-for-the-reprot" class="section level3">
+<h3>Step 2 — Prepare data for the reprot</h3>
 <p>The exact structure and format of data required for the report will
 become clear after <em>Step 1</em>. Create a separate R script which
 will clean, wrangle and make all necessary changes to raw data.
@@ -1687,8 +1680,8 @@ in the folder <code>data_prepared</code> by the name
 <code>data_prepared.feather</code>.</p>
 </blockquote>
 </div>
-<div id="step-3-write-the-report-structure" class="section level2">
-<h2>Step 3 — Write the Report Structure</h2>
+<div id="step-3-write-the-report-structure" class="section level3">
+<h3>Step 3 — Write the Report Structure</h3>
 <p>A new .rmd file will generate the report. Declare all parameters that
 were decided upon in <em>Step 1</em> in this .rmd file. It is in this
 that the analyses flow will be carried out. I suggest to write this .rmd
@@ -1702,9 +1695,9 @@ This makes it easier to implement the analyses flow.</p>
 previous section <em>A note about Quarto rendering</em>)</p>
 </blockquote>
 </div>
-<div id="step-4-one-ring-to-rule-them-all-one-script-to-create-all-the-reports" class="section level2">
-<h2>Step 4 — One ring to rule them All (One script to create all the
-reports)</h2>
+<div id="step-4-one-ring-to-rule-them-all-one-script-to-create-all-the-reports" class="section level3">
+<h3>Step 4 — One ring to rule them All (One script to create all the
+reports)</h3>
 <p>Create a R script for functionally generating multiple parameterised
 reports. In this script create a wrapper function around the
 <code>rmarkdown: render()</code> function in a manner where it takes as
@@ -1723,6 +1716,79 @@ save those in the location specified.</p>
 <p>In this case this is carried out in the file
 <code>generate_parameterised_reports.R</code></p>
 </blockquote>
+</div>
+</div>
+<div id="where-is-the-code-for-all-this" class="section level2">
+<h2>Where is the code for all this??</h2>
+<p><a href="https://github.com/AyushBipinPatel/ideal-chainsaw-purrr">Here is
+the github repo link.</a></p>
+</div>
+<div id="where-are-the-reprots" class="section level2">
+<h2>Where are the reprots</h2>
+<div id="here-are-the-rmd-reports" class="section level3">
+<h3>Here are the Rmd reports</h3>
+<p>[1] “<a href="/District_ReportAhmadabad.html">Ahmadabad</a>”<br />
+[2] “<a href="/District_ReportAmreli.html">Amreli</a>”<br />
+[3] “<a href="/District_ReportAnand.html">Anand</a>”<br />
+[4] “&lt;a href=/District_ReportBanas
+Kantha.html&gt;BanasKantha</a>”<br />
+[5] “<a href="/District_ReportBharuch.html">Bharuch</a>”<br />
+[6] “<a href="/District_ReportBhavnagar.html">Bhavnagar</a>”<br />
+[7] “<a href="/District_ReportDohad.html">Dohad</a>”<br />
+[8] “<a href="/District_ReportGandhinagar.html">Gandhinagar</a>”<br />
+[9] “<a href="/District_ReportJamnagar.html">Jamnagar</a>”<br />
+[10] “<a href="/District_ReportJunagadh.html">Junagadh</a>”<br />
+[11] “<a href="/District_ReportKachchh.html">Kachchh</a>”<br />
+[12] “<a href="/District_ReportKheda.html">Kheda</a>”<br />
+[13] “<a href="/District_ReportMahesana.html">Mahesana</a>”<br />
+[14] “<a href="/District_ReportNarmada.html">Narmada</a>”<br />
+[15] “<a href="/District_ReportNavsari.html">Navsari</a>”<br />
+[16] “&lt;a href=/District_ReportPanch
+Mahals.html&gt;PanchMahals</a>”<br />
+[17] “<a href="/District_ReportPatan.html">Patan</a>”<br />
+[18] “<a href="/District_ReportPorbandar.html">Porbandar</a>”<br />
+[19] “<a href="/District_ReportRajkot.html">Rajkot</a>”<br />
+[20] “&lt;a href=/District_ReportSabar
+Kantha.html&gt;SabarKantha</a>”<br />
+[21] “<a href="/District_ReportSurat.html">Surat</a>”<br />
+[22] “<a href="/District_ReportSurendranagar.html">Surendranagar</a>” [23]
+“<a href="/District_ReportTapi.html">Tapi</a>”<br />
+[24] “&lt;a href=/District_ReportThe Dangs.html&gt;TheDangs</a>”<br />
+[25] “<a href="/District_ReportVadodara.html">Vadodara</a>”<br />
+[26] “<a href="/District_ReportValsad.html">Valsad</a>”</p>
+</div>
+<div id="here-are-the-rmd-reports-1" class="section level3">
+<h3>Here are the Rmd reports</h3>
+<p>[1] “<a href="/District_ReportAhmadabad.html">Ahmadabad</a>”<br />
+[2] “<a href="/District_ReportAmreli.html">Amreli</a>”<br />
+[3] “<a href="/District_ReportAnand.html">Anand</a>”<br />
+[4] “&lt;a href=/District_ReportBanas
+Kantha.html&gt;BanasKantha</a>”<br />
+[5] “<a href="/District_ReportBharuch.html">Bharuch</a>”<br />
+[6] “<a href="/District_ReportBhavnagar.html">Bhavnagar</a>”<br />
+[7] “<a href="/District_ReportDohad.html">Dohad</a>”<br />
+[8] “<a href="/District_ReportGandhinagar.html">Gandhinagar</a>”<br />
+[9] “<a href="/District_ReportJamnagar.html">Jamnagar</a>”<br />
+[10] “<a href="/District_ReportJunagadh.html">Junagadh</a>”<br />
+[11] “<a href="/District_ReportKachchh.html">Kachchh</a>”<br />
+[12] “<a href="/District_ReportKheda.html">Kheda</a>”<br />
+[13] “<a href="/District_ReportMahesana.html">Mahesana</a>”<br />
+[14] “<a href="/District_ReportNarmada.html">Narmada</a>”<br />
+[15] “<a href="/District_ReportNavsari.html">Navsari</a>”<br />
+[16] “&lt;a href=/District_ReportPanch
+Mahals.html&gt;PanchMahals</a>”<br />
+[17] “<a href="/District_ReportPatan.html">Patan</a>”<br />
+[18] “<a href="/District_ReportPorbandar.html">Porbandar</a>”<br />
+[19] “<a href="/District_ReportRajkot.html">Rajkot</a>”<br />
+[20] “&lt;a href=/District_ReportSabar
+Kantha.html&gt;SabarKantha</a>”<br />
+[21] “<a href="/District_ReportSurat.html">Surat</a>”<br />
+[22] “<a href="/District_ReportSurendranagar.html">Surendranagar</a>” [23]
+“<a href="/District_ReportTapi.html">Tapi</a>”<br />
+[24] “&lt;a href=/District_ReportThe Dangs.html&gt;TheDangs</a>”<br />
+[25] “<a href="/District_ReportVadodara.html">Vadodara</a>”<br />
+[26] “<a href="/District_ReportValsad.html">Valsad</a>”</p>
+</div>
 </div>
 </div>
 </div>
