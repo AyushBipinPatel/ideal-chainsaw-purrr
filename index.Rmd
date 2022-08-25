@@ -87,7 +87,7 @@ html_links <- function(fl_pth){
 htmltools::HTML(
   paste(
     '<a href=',
-                paste("/",
+                paste("https://ayushbipinpatel.github.io/ideal-chainsaw-purrr/store_district_RmdReports/",
                       fl_pth,
                       sep = ""),
                 '>',
@@ -103,21 +103,36 @@ htmltools::HTML(
  
 }
 
-purrr::map_chr(fls, html_links)
+unlist(purrr::map(fls, html_links))
 ```
 
 
-### Here are the Rmd reports
+### Here are the Qmd reports
 
 ```{r list_reports_qmd, results='asis', echo=FALSE}
 
 list.files(path = here::here("store_district_QmdReports/"),
            pattern = ".html$") -> fls
 
+html_links <- function(fl_pth){
+htmltools::HTML(
+  paste(
+    '<a href=',
+                paste("https://ayushbipinpatel.github.io/ideal-chainsaw-purrr/store_district_RmdReports/",
+                      fl_pth,
+                      sep = ""),
+                '>',
+                stringr::str_remove_all(
+                  stringr::str_extract(
+                    fl_pth,
+                    "(?<=rt).{1,}(?=.html)"
+                    )
+                  ," "),
+                '</a>\n', sep = ""
+  )
+)
+ 
+}
 
-purrr::map_chr(fls, html_links)
+unlist(purrr::map(fls, html_links))
 ```
-
-## test delete later
-
-[click here](/store_district_RmdReports/District_ReportAmreli.html)
