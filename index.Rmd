@@ -118,3 +118,6 @@ list.files(path = here::here("store_district_QmdReports/"),
 purrr::map_chr(fls, html_links)
 ```
 
+## test delete later
+
+[click here](/store_district_RmdReports/District_ReportAmreli.html)
