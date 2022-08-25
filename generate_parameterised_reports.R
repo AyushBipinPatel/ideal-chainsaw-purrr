@@ -40,12 +40,15 @@ warp_render <- function(para_input){
   
   rmarkdown::render(
     input = here("district_report.rmd"), # the file that needs to be rendered
-    output_file = paste(
-      "District_Report",
-      para_input,
-      ".html",
-      sep = ""
-      ), # Name of the rendered file
+    output_file = stringr::str_remove_all(
+      paste(
+        "District_Report",
+        para_input,
+        ".html",
+        sep = ""
+      ),
+      " "
+    ), # Name of the rendered file
     output_dir = here("store_district_RmdReports/"), # folder location for rendered file
     params = list(
       dist_name = para_input # All the param and corresponding values
@@ -77,11 +80,13 @@ warp_render_quarto <- function(para_input){
   
   quarto::quarto_render(
     input = here("store_district_QmdReports/district_report.qmd"),
-    output_file = paste(
-      ".\\store_district_QmdReports\\District_Report",
-      para_input,
-      ".html",
-      sep = ""
+    output_file = stringr::str_remove_all(
+      paste(
+        ".\\store_district_QmdReports\\District_Report",
+        para_input,
+        ".html",
+        sep = ""
+      )
     ),
     execute_params = list(
       dist_name = para_input # All the param and corresponding values
