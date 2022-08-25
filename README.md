@@ -13,9 +13,39 @@ The report is created using the files `district_report.rmd` and `district_report
 
 The file `generate_parameterised_reports.R` contains code to programmatically generate several reports using the {purrr} abilities.
 
-<Insert directory tree image here>
+
 
 ## A note about Quarto rendering 
 
-
 The {quarto} package contains a function, `quarto_render()`, which is a mirror for `rmarkdown::render()`. However, in the `quarto::quarto_render` there is no `output_dir` argument. This means that the rendered .html(or any output format) are stored in the same place as the .qmd file. This is why the `district_report.qmd` file is in the `store_district_QmdReports` folder. There is a current issue open on the rstudion community about this as well. [To read more click here.](https://community.rstudio.com/t/output-directory-in-quarto-cli-not-respected/143762/6)
+
+
+## A note on process
+
+This is an attempt to lay down the steps to generate parameterised reports using purrr and rmarkdown.
+
+## Step 1 --- Arriving at the analyses that you want to present in report
+
+It is important to have completed all exploratory analyses and have gone through various analytical detours and rabbit holes beforehand. This process usually helps in deciding what is to be reported and decide the flow of analyses (steps/pieces of analyses). This framework should be set and frozen. However, one can enhance this framework from time to time. It is also in this step you decide what all params you will need or keep.
+
+## Step 2 --- Prepare data for the reprot
+
+The exact structure and format of data required for the report will become clear after _Step 1_. Create a separate R script which will clean, wrangle and make all necessary changes to raw data. Moreover, the prepared data can be saved as a csv or feather file or a file of your choosing.  It is this prepared data that will be used to generate the report. The prepared data, _in my opinion_, should be in a manner that will allow you to carry out practically least amount of complex computations in the report (.rmd file).
+
+>In this case the raw data is in the `data_raw` folder, which is cleaned, wrangled and prepared using the script `prepare_data_for_report.R` and the prepared data is stored in the folder `data_prepared` by the name `data_prepared.csv` and `data_prepared.feather`.
+
+## Step 3 --- Write the Report Structure
+
+A new .rmd file will generate the report. Declare all parameters that were decided upon in _Step 1_ in this .rmd file. It is in this that the analyses flow will be carried out. I suggest to write this .rmd file keeping in mind some values that the params in this file can take. This makes it easier to implement the analyses flow.
+
+>In this case the report structure is contained in the `district_report.rmd` and for quarto it is in the file `district_report.qmd` (this .qmd file is in the folder `store_didtrict_QmdReports` for reasons described in the previous section _A note about Quarto rendering_)
+
+## Step 4 --- One ring to rule them All (One script to create all the reports)
+
+Create a R script for functionally generating multiple parameterised reports. In this script create a wrapper function around the `rmarkdown: render()` function in a manner where it takes as input the file created in _Step 3_, points to the folder in which the generated reports are to me saved, gives appropriate names to the generated reports and takes in the values that the params will assume for the report.
+
+Once this function is created. Create a vectors/lists, one for each param, that will contain the sequence of values to be passed to a given parameter.
+
+Use the appropriate {purrr} function, if there are two or more params `pmap` is the way to go, apply the wraper function over the vectors/lists of param inputs. This will generate all your reprots and save those in the location specified.
+
+>In this case this is carried out in the file `generate_parameterised_reports.R`
