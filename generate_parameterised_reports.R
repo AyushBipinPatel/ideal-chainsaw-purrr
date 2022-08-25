@@ -86,7 +86,8 @@ warp_render_quarto <- function(para_input){
         para_input,
         ".html",
         sep = ""
-      )
+      ),
+      " "
     ),
     execute_params = list(
       dist_name = para_input # All the param and corresponding values
