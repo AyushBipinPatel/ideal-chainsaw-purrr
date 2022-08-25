@@ -15,6 +15,8 @@ A repo to contain the example of parameterised reporting using Rmarkdown.
 
 As a part of my talk for the [RLadies Bangalore Community](https://twitter.com/rladiesblr), this repository will serve as an example for how to parameterize rmarkdown and quarto reports (files).
 
+_A point to note is that these reports presented here are not statistically rigorous or aesthetically acceptable, the idea here is to demonstrate the principle of prarameterised reports and how to create several such reports with the help of {purrr}._
+
 ## Project/file structure
 
 All the raw data is stored in the `data_raw` folder. The raw data is the census village amenities directory for the Gujarat state for year 2011. One can look for this dataset [here](https://ndap.niti.gov.in/dataset/7121)
