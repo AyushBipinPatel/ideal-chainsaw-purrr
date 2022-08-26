@@ -37,7 +37,7 @@ This report aims to provide a birds eye view of the district through the lens of
 htmltools::HTML(
   paste0('<center><iframe src="https://en.wikipedia.org/w/index.php?search=',
          params$dist_name,
-         '+district+Gujarat&title=Special:Search&profile=advanced&fulltext=1&ns0=1" style="height:500px;width:800px;border:none;" title="District Web Page"></iframe></center>')
+         '+district+Gujarat&title=Special:Search&profile=advanced&fulltext=1&ns0=1" style="height:500px;width:800px;border:none;" title="District Web Page" data-external="1"></iframe></center>')
 )
 
 ```
