@@ -120,7 +120,7 @@ html_links <- function(fl_pth){
 htmltools::HTML(
   paste(
     '<a href=',
-                paste("https://ayushbipinpatel.github.io/ideal-chainsaw-purrr/store_district_RmdReports/",
+                paste("https://ayushbipinpatel.github.io/ideal-chainsaw-purrr/store_district_QmdReports/",
                       fl_pth,
                       sep = ""),
                 '>',
