@@ -1,5 +1,5 @@
 ---
-title: "`r paste('District Level Report','- Kheda')`"
+title: "`r paste('District Level Report',params$dist_name)`"
 author: "Ayush Patel"
 date: "2022-08-23"
 format: 
